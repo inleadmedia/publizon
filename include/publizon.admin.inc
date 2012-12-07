@@ -219,5 +219,8 @@ function publizon_admin_form_submit($form, &$form_state) {
         unset($form_state['values']['publizon']['libraries'][$id]);
       }
     }
+
+    // Some value may have been removed, so reindex the array.
+    $form_state['values']['publizon']['libraries'] = array_values($form_state['values']['publizon']['libraries']);
   }
 }
