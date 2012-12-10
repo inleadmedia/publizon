@@ -42,9 +42,13 @@ configuration provided by the site administrator. So basically you should only
 use parameters, if you want to override the default behaviour (mostly for
 testing).
 
-_Note_: Not all Publizon API class have been implemented yet and they will throw
- a "Not implemented yet" exception. See the PublizonClient.class.inc for more
-information.
+The module provides to different loggers which will default to the PublizonVoidLogger,
+that sends the message into the void, and PublizonWatchdogLogger that send the log 
+messages to Drupals log. 
+
+_Note_: Not all Publizon API functions have been fully implemented yet and they 
+will throw a exception with the message "Not implemented yet". See the 
+PublizonClient.class.inc for more information.
 
 # Publizon Product
 If you simply need to get information about a product from Publizon use the

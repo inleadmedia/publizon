@@ -71,8 +71,8 @@ class PublizonClient {
     $this->setSetting('retailer_key_code', $retailer_key_code);
 
     // Set logger.
-    $this->logger = new PublizonVoidLogger();
     if (!isset($logger)) {
+      $this->logger = new PublizonVoidLogger();
       if ($publizon['settings']['logging']) {
         $this->logger = new PublizonWatchDogLogger();
       }
