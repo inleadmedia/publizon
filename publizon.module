@@ -147,6 +147,49 @@ function publizon_flush_caches() {
 }
 
 /**
+ * Implements hook_block().
+ *
+ * Creates a block with an list over the x last loans from the site.
+ */
+function publizon_block($op = 'list', $delta = 0) {
+  $block = array();
+  switch ($op) {
+    case 'list':
+      $block['lastloans'] = array(
+        'info' => 'Last loans (Publizon)',
+        'cache' => BLOCK_NO_CACHE,
+      );
+      break;
+
+    case 'view':
+      // Get site type
+      $type = variable_get('publizon_site_type', PUBLIZON_EBOOK);
+
+      try {
+        // Try to get connection with publizon and fetch list of last loans
+        $client = PublizonClient::getClient();
+        $products = $client->getLastLoansForAll($type);
+
+        // Theme the last loans as a product list.
+        $content = theme('publizon_products_list', $products);
+      }
+      catch (Exception $e) {
+        // Something was not right, so display the error in the block.
+        $content = $e->getMessage();
+      }
+
+      // Add content to the block.
+      $block = array(
+        'subject' => t('Last loans'),
+        'content' => $content,
+      );
+
+      break;
+  }
+  return $block;
+}
+
+/**
  * Default implementation fo hook_preprocess_publizon_actions(). It generates
  * the action links, button or icons on the different publizon product lists.
  *
