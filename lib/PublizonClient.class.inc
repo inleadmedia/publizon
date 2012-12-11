@@ -172,7 +172,7 @@ class PublizonClient {
       if (isset($data[0])) {
         $data = $data[0];
         foreach ($data->orderinformationitem as $item) {
-          $product = new PublizonProduct($item->identifier);
+          $product = new PublizonProduct((string)$item->identifier);
           if (isset($product->status)) {
             $products[] = $product;
             $items_found++;
@@ -289,7 +289,7 @@ class PublizonClient {
    * Get basic information about a given library as registrated at Publizon. It
    * will fallback on the clients retailer id and retailer key code defined in
    * the current instance of the client if non is given as arguments.
-   * 
+   *
    * @param string $retailer_id
    *  The librarys ID at Publizon.
    * @param string $retailer_key_code
