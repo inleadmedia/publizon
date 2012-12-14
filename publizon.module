@@ -150,20 +150,32 @@ function publizon_block($op = 'list', $delta = 0) {
       break;
 
     case 'view':
+      $content = '';
+
       // Get site type
       $type = variable_get('publizon_site_type', PUBLIZON_EBOOK);
 
-      try {
-        // Try to get connection with publizon and fetch list of last loans
-        $client = PublizonClient::getClient();
-        $products = $client->getLastLoansForAll($type);
-
-        // Theme the last loans as a product list.
-        $content = theme('publizon_products_list', $products);
+      // Check for cached version of last loans.
+      $cid = 'publizon_last_loan_' . $type;
+      if ($cache = cache_get($cid)) {
+        $content = $cache->data;
       }
-      catch (Exception $e) {
-        // Something was not right, so display the error in the block.
-        $content = $e->getMessage();
+      else {
+        try {
+          // Try to get connection with publizon and fetch list of last loans
+          $client = PublizonClient::getClient();
+          $products = $client->getLastLoansForAll($type);
+
+          // Theme the last loans as a product list.
+          $content = theme('publizon_products_list', $products);
+
+          // Store the content in cache (10 min).
+          cache_set($cid, $content, time() + 600);
+        }
+        catch (Exception $e) {
+          // Something was not right, so display the error in the block.
+          $content = $e->getMessage();
+        }
       }
 
       // Add content to the block.
