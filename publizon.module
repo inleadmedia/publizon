@@ -240,11 +240,6 @@ function template_preprocess_publizon_actions(&$vars) {
       break;
   }
 
-  // Give other module the posibility to modify actions by using
-  // hook_publizon_actions_alter(). Or you can use the hook_preprocess on this
-  // theme function.
-  drupal_alter('publizon_actions', $actions);
-
   // Sort the actions based on weight.
   usort($actions, 'element_sort');
   $vars['actions'] = $actions;
