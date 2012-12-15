@@ -15,6 +15,12 @@ define('PUBLIZON_EBOOK', 1);
 define('PUBLIZON_NETSOUND', 2);
 
 /**
+ * Define constances used to detect the users current device platform.
+ */
+define('PUBLIZON_PLATFORM_GENERIC', 1);
+define('PUBLIZON_PLATFORM_IOS', 2);
+
+/**
  * Implements hook_perm().
  */
 function publizon_perm() {
@@ -326,4 +332,21 @@ function publizon_ting_find_object($isbn) {
   }
 
   return $object;
+}
+
+/**
+ * Detect the current users platform and return a constances for that platform.
+ *
+ * @return int
+ *  Returns the constances PUBLIZON_PLATFORM_IOS or PUBLIZON_PLATFORM_GENERIC.
+ */
+function publizon_get_client_platform() {
+  $user_agent = $_SERVER['HTTP_USER_AGENT'];
+
+  if (preg_match('/(iPod)|(iPad)|(iPhone)/i', $user_agent)) {
+    return PUBLIZON_PLATFORM_IOS;
+  }
+  else {
+    return PUBLIZON_PLATFORM_GENERIC;
+  }
 }
