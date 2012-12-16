@@ -176,7 +176,7 @@ function publizon_block($op = 'list', $delta = 0) {
           $content = theme('publizon_products_list', $products);
 
           // Store the content in cache (10 min).
-          cache_set($cid, $content, time() + 600);
+          cache_set($cid, $content, 'cache', time() + 600);
         }
         catch (Exception $e) {
           // Something was not right, so display the error in the block.
